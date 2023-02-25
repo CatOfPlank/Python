@@ -17,6 +17,7 @@ class SetUI(object):
         self.ui_weight = weight
         self.ui_height = height
         self.title = " 音乐破解软件"
+
         self.ui_root = tk.Tk(className=self.title)
         self.ui_url = tk.StringVar()
         self.ui_var = tk.IntVar()
