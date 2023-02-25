@@ -1,0 +1,11 @@
+﻿{
+    "date": [1],
+    "sess": [1],
+    "price": [1, 2, 3],
+    "real_name": [1, 2],
+    "nick_name": "普朗克小猫ai",
+    "ticket_num": 1,
+    "driver_path": "E:\\chromedriver_win32\\chromedriver.exe",
+    "damai_url": "https://www.damai.cn/",
+    "target_url": "https://detail.damai.cn/item.htm?id=702511396608"
+}
