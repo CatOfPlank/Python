@@ -35,12 +35,12 @@ def get_jobid(str_mes):
 
 # 提取求职者id
 def get_hunters_id(str_mes):
-    hunterid_cnt = 0
+    hunter_cnt = 0
     for k in range(10): # 一页十条
         hunter_id_index = str_mes.index('"username"')  # 查找id项
         if hunter_id_index >= 0: # 可靠
-            hunterid_cnt += 1
-            print("第{}个求职者id：{}".format(hunterid_cnt, str_mes[hunter_id_index - 1]))
+            hunter_cnt += 1
+            print("第{}个求职者id：{}".format(hunter_cnt, str_mes[hunter_id_index - 1]))
         str_mes = str_mes[hunter_id_index + 10:]  # 跳过本条
 
 
