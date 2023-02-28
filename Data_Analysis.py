@@ -15,7 +15,12 @@ header_find_job = {
                   'Safari/537.36 Edg/110.0.1587.56 '
 
 }
-Max_page = 100  # 网站最大页码
+
+header_job_detail = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.57'
+
+}
+Max_page = 2  # 网站最大页码
 
 
 # 数据导出
@@ -25,14 +30,28 @@ def export_data(mes):
 
 # 获取招聘工作id
 def get_jobid(str_mes):
+    jobid_list = []
     id_cnt = 0
     for j in range(10):  # 一行十个工作
         index_id = str_mes.index('"jobPositionId"')  # 查找工作Id项
         if index_id >= 0:
-            id_cnt += 1 # id数加一
+            id_cnt += 1  # id数加一
             if str_mes[index_id + 1] != "null":
                 print("第{}个招聘信息id：{}".format(id_cnt, str_mes[index_id + 1]))
-        str_mes = str_mes[index_id + 10:]  # 跳过本条
+                jobid_list.append(str_mes[index_id + 1])
+            else:
+                print("error!")
+        str_mes = str_mes[index_id + 50:]  # 跳过本条
+    return jobid_list  # 返回工作id列表
+
+
+# 根据招聘工作id获取工作要求详细信息
+def get_job_details(job_id_list):
+    for index_list in range(0, 10):
+        job_detail_url = "https://www.5iai.com/api/enterprise/job/public?id=" + "".join(
+            list(filter(str.isdigit, job_id_list[index_list])))
+        detail_job_response = requests.get(url=job_detail_url, headers=header_job_detail)  # 获取详细信息
+        print("第{}个招聘工作详细要求：{}".format(index_list + 1, detail_job_response.text))
 
 
 # 提取求职者id
@@ -61,13 +80,12 @@ for i in range(1, Max_page):  # 翻页
 
     response_job = requests.get(url=url_job, headers=header)
     response_hunter = requests.get(url=url_find_job, headers=header_find_job)
-    mes_job = re.split(',|:', response_job.text[50:]) # 前缀处理
+    mes_job = re.split(',|:', response_job.text)
     # mes_hunter = re.split(',|:', response_hunter.text)  # 分割数据
     # print("求职者第" + str(i) + "页信息:")
     # print(mes_hunter)
     # get_hunters_id(mes_hunter)  # 求职者id
     print("招聘工作第" + str(i) + "页信息:")
     print(mes_job)
-    get_jobid(mes_job)
-
+    get_job_details(get_jobid(mes_job))
 # if __name__ == '__main__':
