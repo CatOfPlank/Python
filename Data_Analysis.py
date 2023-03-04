@@ -40,6 +40,21 @@ def export_data(mes):
     pprint.pprint(json_data)  # 格式化输出
 
 
+# 遗传算法计算权重
+def genetic_algorithm(data):
+    data
+
+
+# 构建招聘工作模型
+def create_recruit_model(job_detail):
+    job_detail
+
+
+# 创建求职者模型
+def create_hunters_model(hunters_detail):
+    hunters_detail
+
+
 # 计算向量相似度
 def cal_vector_similarity(vec1, vec2):
     cos_sim = vec1.dot(vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2)) * 100
