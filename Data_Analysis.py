@@ -1,4 +1,4 @@
-import openpyxl
+import numpy as np
 import pandas as pd
 import requests
 import re
@@ -40,6 +40,12 @@ def export_data(mes):
     pprint.pprint(json_data)  # 格式化输出
 
 
+# 计算向量相似度
+def cal_vector_similarity(vec1, vec2):
+    cos_sim = vec1.dot(vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2)) * 100
+    print("向量相似度为：{:.5f}%".format(cos_sim))
+
+
 # 获取招聘工作id
 def get_jobid(str_mes):
     jobid_list = []
@@ -78,7 +84,7 @@ def get_hunters_id(str_mes):
             print("第{}个求职者id：{}".format(hunter_cnt, str_mes[hunter_id_index - 1]))
             id_list.append(str_mes[hunter_id_index - 1])
         str_mes = str_mes[hunter_id_index + 10:]  # 跳过本条
-    return id_list  # 返回id列表
+    return id_list  # 返回id列表6
 
 
 # 获取求职者具体简历
