@@ -4,9 +4,8 @@ import requests
 import re
 import json
 import pprint
-import xlwings as xw
-import csv
-import os
+
+# 泰迪杯数据挖掘C题---招聘网站双向推荐系统
 
 # 伪装
 header = {
@@ -33,6 +32,8 @@ header_hunter_detail = {
 
 Max_page = 2  # 网站最大页码
 
+education_requirement = {"不限": 1, "技工": 1, "大专": 2, "本科": 3, "硕士": 4, "博士": 5}  # 学历要求，网站以代码形式展现
+
 
 # 数据导出
 def export_data(mes):
@@ -41,16 +42,16 @@ def export_data(mes):
 
 
 # 遗传算法计算权重
-def genetic_algorithm(data):
+def cal_weight(data):
     data
 
 
-# 构建招聘工作模型
+# 构建招聘工作数学模型
 def create_recruit_model(job_detail):
     job_detail
 
 
-# 创建求职者模型
+# 创建求职者数学模型
 def create_hunters_model(hunters_detail):
     hunters_detail
 
