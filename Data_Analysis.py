@@ -1,6 +1,7 @@
 import pandas as pd
 import requests
 import re
+import numpy as np
 import xlwings as xw
 import csv
 import pprint
@@ -34,8 +35,7 @@ header_hunter_detail = {
 
 Max_page = 2  # 网站最大页码
 
-education_requirement = {"不限": 1, "技工": 1, "大专": 2, "本科": 3, "硕士": 4, "博士": 5}  # 学历要求，网站以代码形式展现
-
+education_requirement = {"不限": 1, "技工": 1, "大专": 2, "本科": 3, "硕士": 4, "博士": 5}  # 学历要求，网站以编号形式展现
 
 # 数据导出
 f = open('result_1.csv', mode='a', encoding='utf-8', newline='')
@@ -97,8 +97,30 @@ def get_job_details(job_id_list):
         job_detail_url = "https://www.5iai.com/api/enterprise/job/public?id=" + "".join(
             list(filter(str.isdigit, job_id_list[index_list])))
         detail_job_response = requests.get(url=job_detail_url, headers=header_job_detail)  # 获取详细信息
-        print("第{}个招聘工作详细要求".format(index_list + 1))
-        export_data(detail_job_response.text)
+        mes_job = detail_job_response.text.strip()
+        json_data = json.loads(mes_job)['data']  # 得到查看content里的数据
+        job_id = json_data['id']
+        jobRequirements = json_data['jobRequiredments']
+        welfare = json_data['welfare']
+        position = json_data['positionName']
+        minimumWage = json_data['minimumWage']
+        maximumWage = json_data['maximumWage']
+        educationalRequirements = json_data['educationalRequirements']
+        company = json_data['enterpriseName']
+
+        dit = {
+            '招聘信息id': job_id,
+            '岗位名称': position,
+            '公司名称': company,
+            '职位要求': jobRequirements,
+            '最小工资': minimumWage,
+            '最大工资': maximumWage,
+            '工作福利': welfare,
+            '学历要求': educationalRequirements
+        }
+        print(job_id, position, company, jobRequirements, minimumWage, maximumWage, welfare, educationalRequirements)
+        # print("第{}个招聘工作详细要求".format(index_list + 1))
+        export_data(detail_job_response.text)  # 导出数据
 
 
 # 提取求职者id
@@ -112,7 +134,7 @@ def get_hunters_id(str_mes):
             print("第{}个求职者id：{}".format(hunter_cnt, str_mes[hunter_id_index - 1]))
             id_list.append(str_mes[hunter_id_index - 1])
         str_mes = str_mes[hunter_id_index + 10:]  # 跳过本条
-    return id_list  # 返回id列表6
+    return id_list  # 返回id列表
 
 
 # 获取求职者具体简历
@@ -121,7 +143,38 @@ def get_hunter_detail(hunter_id_list):
         hunter_detail_url = "https://www.5iai.com/api/resume/baseInfo/public/" + "".join(
             list(filter(str.isdigit, hunter_id_list[index_list])))
         detail_hunter_response = requests.get(url=hunter_detail_url, headers=header_hunter_detail)  # 获取求职者简历
+        mes_hunter = detail_hunter_response.text.strip()
+        json_data = json.loads(mes_hunter)['data']  # 获取具体数据
+        hunter_id = json_data['id']
+        hunter_gender = json_data['gender']
+        hunter_address = json_data['address']
+        hunter_age = json_data['birthday']
+        hunter_arrivalTime = json_data['arrivalTime']   # 报到时间
+        hunter_politicalStatus = json_data['politicalStatus']     # 政治面貌
+        hunter_exp = json_data['exp']   # 工作经验
+        hunter_selfEvaluation = json_data['selfEvaluation']     # 自我评价
+        hunter_expectIndustry = json_data['expectIndustry']     # 期望企业
+        hunter_expectPosition = json_data['expectPosition']  # 期望职位
+        hunter_expectMinWage = json_data['willSalaryStart']     # 期望最小薪资
+        hunter_expectMaxWage = json_data['willSalaryEnd']   # 期望最大薪资
+        hunter_educationExp = json_data['educationExperienceList']  # 学历
+        hunter_competitionExp = json_data['competitionExperienceList']   # 竞赛经历
+        hunter_projectExp = json_data['educationExperienceList']    # 项目经历
+        hunter_trainingExp = json_data['trainingExperienceList']    # 训练经历
+        hunter_workExp = json_data['workExperienceList']    # 工作经历
+        hunter_profession = json_data['professionalList']    # 专业技能
+        hunter_cert = json_data['certList']     # 所得证书
+        hunter_language = json_data['languageList']  # 擅长语言
+        dit =
+        {
+            '应聘者id':hunter_id,
+            '应聘者性别'
+            '应聘者居住地址':
+
+
+        }
         print("第{}个求职者简历：".format(index_list + 1))
+
         export_data(detail_hunter_response.text)
 
 
@@ -143,33 +196,11 @@ def get_all_message():
 
         response_job = requests.get(url=url_job, headers=header)
         response_hunter = requests.get(url=url_find_job, headers=header_find_job)
-        mes_job = response_job.text.strip()
-        # job_data = mes_job.replace("\"", "'")
-        # mes_job = re.split(',|:', response_job.text[50:]) # 前缀处理
-        # mes_hunter = re.split(',|:', response_hunter.text)  # 分割数据
-        # print("求职者第" + str(i) + "页信息:")
-        # print(mes_hunter)
-        # get_hunters_id(mes_hunter)  # 求职者id
-        # print("招聘工作第" + str(i) + "页信息:")
-        json_data = json.loads(mes_job)['data']['content']  # 得到查看content里的数据
-        # print(json_data)
-        # print(type(json_data))
-        # pprint.pprint(json_data['content'])
-        for index in json_data:
-            job_id = index['id']
-            position = index['positionName']
-            enterpriseExtInfo = index['enterpriseExtInfo']
-            company = enterpriseExtInfo.get('shortName')
-            industry = enterpriseExtInfo.get('industry')
-            keyword = industry.replace('[', '').replace(']', '').replace('"', '')
-            dit = {
-                '招聘信息id': job_id,
-                '岗位名称': position,
-                '公司名称': company,
-                '职位关键词': keyword,
-            }
-            print(job_id, position, company, keyword)
-            csv_writer.writerow(dit)
+        mes_job = re.split(',|:', response_job.text)
+        mes_hunter = re.split(',|:', response_hunter.text)  # 分割数据
+        get_job_details(get_jobid(mes_job))  # 获取详细招聘要求
+        get_hunter_detail(get_hunters_id(mes_hunter))  # 获取求职者具体信息
+        #     csv_writer.writerow(dit)
 
 
 if __name__ == '__main__':
