@@ -118,6 +118,7 @@ def get_job_details(job_id_list):
             '工作福利': welfare,
             '学历要求': educationalRequirements
         }
+        print("第{}个招聘工作关键词：".format(index_list + 1))
         print(job_id, position, company, jobRequirements, minimumWage, maximumWage, welfare, educationalRequirements)
         # print("第{}个招聘工作详细要求".format(index_list + 1))
         export_data(detail_job_response.text)  # 导出数据
@@ -148,34 +149,53 @@ def get_hunter_detail(hunter_id_list):
         hunter_id = json_data['id']
         hunter_gender = json_data['gender']
         hunter_address = json_data['address']
-        hunter_age = json_data['birthday']
-        hunter_arrivalTime = json_data['arrivalTime']   # 报到时间
-        hunter_politicalStatus = json_data['politicalStatus']     # 政治面貌
-        hunter_exp = json_data['exp']   # 工作经验
-        hunter_selfEvaluation = json_data['selfEvaluation']     # 自我评价
-        hunter_expectIndustry = json_data['expectIndustry']     # 期望企业
+        hunter_age = json_data['birthday']  # 年龄
+        hunter_arrivalTime = json_data['arrivalTime']  # 报到时间
+        hunter_politicalStatus = json_data['politicalStatus']  # 政治面貌
+        hunter_exp = json_data['exp']  # 工作经验
+        hunter_selfEvaluation = json_data['selfEvaluation']  # 自我评价
+        hunter_expectIndustry = json_data['expectIndustry']  # 期望企业
         hunter_expectPosition = json_data['expectPosition']  # 期望职位
-        hunter_expectMinWage = json_data['willSalaryStart']     # 期望最小薪资
-        hunter_expectMaxWage = json_data['willSalaryEnd']   # 期望最大薪资
+        hunter_expectMinWage = json_data['willSalaryStart']  # 期望最小薪资
+        hunter_expectMaxWage = json_data['willSalaryEnd']  # 期望最大薪资
         hunter_educationExp = json_data['educationExperienceList']  # 学历
-        hunter_competitionExp = json_data['competitionExperienceList']   # 竞赛经历
-        hunter_projectExp = json_data['educationExperienceList']    # 项目经历
-        hunter_trainingExp = json_data['trainingExperienceList']    # 训练经历
-        hunter_workExp = json_data['workExperienceList']    # 工作经历
-        hunter_profession = json_data['professionalList']    # 专业技能
-        hunter_cert = json_data['certList']     # 所得证书
+        hunter_competitionExp = json_data['competitionExperienceList']  # 竞赛经历
+        hunter_projectExp = json_data['educationExperienceList']  # 项目经历
+        hunter_trainingExp = json_data['trainingExperienceList']  # 训练经历
+        hunter_workExp = json_data['workExperienceList']  # 工作经历
+        hunter_profession = json_data['professionalList']  # 专业技能
+        hunter_cert = json_data['certList']  # 所得证书
         hunter_language = json_data['languageList']  # 擅长语言
-        dit =
-        {
-            '应聘者id':hunter_id,
-            '应聘者性别'
-            '应聘者居住地址':
 
-
+        dit = {
+            '求职者id': hunter_id,
+            '性别': hunter_gender,
+            '年龄': hunter_age,
+            '学历': hunter_educationExp,
+            '居住地址': hunter_address,
+            '可报到时间': hunter_arrivalTime,
+            '政治面貌': hunter_politicalStatus,
+            '工作年龄': hunter_exp,
+            '自我评价': hunter_selfEvaluation,
+            '期望企业': hunter_expectIndustry,
+            '期望职位': hunter_expectPosition,
+            '期望最小薪资': hunter_expectMinWage,
+            '期望最大薪资': hunter_expectMaxWage,
+            '竞赛经历': hunter_competitionExp,
+            '项目经历': hunter_projectExp,
+            '训练经历': hunter_trainingExp,
+            '工作经历': hunter_workExp,
+            '专业技能': hunter_profession,
+            '外语技能': hunter_language,
+            '获得证书': hunter_cert
         }
-        print("第{}个求职者简历：".format(index_list + 1))
-
-        export_data(detail_hunter_response.text)
+        print("第{}个求职者关键词：".format(index_list + 1))
+        print(hunter_id, hunter_gender, hunter_age, hunter_educationExp, hunter_address, hunter_arrivalTime,
+              hunter_politicalStatus, hunter_exp, hunter_selfEvaluation, hunter_expectIndustry, hunter_expectPosition, hunter_expectMinWage, hunter_expectMaxWage,
+              hunter_competitionExp, hunter_projectExp, hunter_trainingExp, hunter_workExp, hunter_profession, hunter_language, hunter_cert)
+        # print("第{}个求职者简历：".format(index_list + 1))
+        #
+        # export_data(detail_hunter_response.text)
 
 
 # 爬取全部数据
