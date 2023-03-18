@@ -1,9 +1,11 @@
-import numpy as np
 import pandas as pd
 import requests
 import re
-import json
+import xlwings as xw
+import csv
 import pprint
+import json
+import time
 
 # 泰迪杯数据挖掘C题---招聘网站双向推荐系统
 
@@ -36,6 +38,16 @@ education_requirement = {"不限": 1, "技工": 1, "大专": 2, "本科": 3, "�
 
 
 # 数据导出
+f = open('result_1.csv', mode='a', encoding='utf-8', newline='')
+csv_writer = csv.DictWriter(f, fieldnames=[
+    '招聘信息id',
+    '岗位名称',
+    '公司名称',
+    '职位关键词',
+])
+csv_writer.writeheader()  # 写入表头
+
+
 def export_data(mes):
     json_data = json.loads(mes)  # 转成dict格式
     pprint.pprint(json_data)  # 格式化输出
@@ -116,6 +128,7 @@ def get_hunter_detail(hunter_id_list):
 # 爬取全部数据
 def get_all_message():
     for i in range(1, Max_page):  # 翻页
+        time.sleep(1)
         url_job = "https://www.5iai.com/api/enterprise/job/public/es?pageSize=10&pageNumber=" + str(i) + "&willNature" \
                                                                                                          "=&function" \
                                                                                                          "=&wageList=%255B%255D" \
@@ -130,14 +143,33 @@ def get_all_message():
 
         response_job = requests.get(url=url_job, headers=header)
         response_hunter = requests.get(url=url_find_job, headers=header_find_job)
-        mes_job = re.split(',|:', response_job.text)
-        mes_hunter = re.split(',|:', response_hunter.text)  # 分割数据
-        print("招聘工作第" + str(i) + "页信息:")
-        print(mes_job)
-        get_job_details(get_jobid(mes_job))
-        print("求职者第" + str(i) + "页信息:")
-        print(mes_hunter)
-        get_hunter_detail(get_hunters_id(mes_hunter))
+        mes_job = response_job.text.strip()
+        # job_data = mes_job.replace("\"", "'")
+        # mes_job = re.split(',|:', response_job.text[50:]) # 前缀处理
+        # mes_hunter = re.split(',|:', response_hunter.text)  # 分割数据
+        # print("求职者第" + str(i) + "页信息:")
+        # print(mes_hunter)
+        # get_hunters_id(mes_hunter)  # 求职者id
+        # print("招聘工作第" + str(i) + "页信息:")
+        json_data = json.loads(mes_job)['data']['content']  # 得到查看content里的数据
+        # print(json_data)
+        # print(type(json_data))
+        # pprint.pprint(json_data['content'])
+        for index in json_data:
+            job_id = index['id']
+            position = index['positionName']
+            enterpriseExtInfo = index['enterpriseExtInfo']
+            company = enterpriseExtInfo.get('shortName')
+            industry = enterpriseExtInfo.get('industry')
+            keyword = industry.replace('[', '').replace(']', '').replace('"', '')
+            dit = {
+                '招聘信息id': job_id,
+                '岗位名称': position,
+                '公司名称': company,
+                '职位关键词': keyword,
+            }
+            print(job_id, position, company, keyword)
+            csv_writer.writerow(dit)
 
 
 if __name__ == '__main__':
