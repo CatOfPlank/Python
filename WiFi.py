@@ -2,10 +2,11 @@
 Wifi数据传输---服务端
 
 """
+# coding = <gbk> # 支持中文
 import sys
 import socket
 import time
-import  re
+import re
 import matplotlib.pyplot as plt
 import threading
 import struct
@@ -34,10 +35,10 @@ data_buff = []
 
 
 def Receive():
-    data = client_socket.recv(3)    # 收到一个字节
-
+    data = client_socket.recv(3)  # 收到一个字节
+    data = data.decode('gbk')
     data = str(data)
-    f_data = data.replace("\\" , "").replace("r","").replace("n","")
+    f_data = data.replace("\\", "").replace("r", "").replace("n", "")
     f_data = float(f_data)
     data_buff.append(f_data)
     # 接收到的信息，一个字节
@@ -48,8 +49,11 @@ def Receive():
 
 # 画曲线
 def draw(data):
-    freq = np.linspace(0, 200, 200)  # 频率轴
+    freq = np.linspace(0, 200, 5)  # 频率轴
+    plt.xlabel("Frequency/KHz")
+    plt.ylabel("Normalization/dB")
     plt.plot(freq, data)
+    plt.show()
 
 
 if __name__ == '__main__':
