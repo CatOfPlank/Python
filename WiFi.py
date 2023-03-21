@@ -35,7 +35,7 @@ data_buff = []
 
 
 def Receive():
-    data = client_socket.recv(3)  # 收到一个字节
+    data = client_socket.recv(5)  # 收到一个字节
     data = data.decode('gbk')
     data = str(data)
     f_data = data.replace("\\", "").replace("r", "").replace("n", "")
