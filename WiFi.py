@@ -3,15 +3,10 @@ Wifi数据传输---服务端
 
 """
 # -*- coding: utf-8 -*-     # 支持中文
-import sys
 import socket
 import time
-import re
 import matplotlib.pyplot as plt
-import threading
-import struct
 import numpy as np
-from mpldatacursor import datacursor
 
 # socket
 # 地址和端口号
@@ -31,14 +26,14 @@ if clientAddr is not None:
 
 # 接收数据
 data_buff = []
-amp_num = 5     # 纵坐标数据量
+amp_num = 10     # 纵坐标数据量
 
 
 def Receive():
-    data = client_socket.recv(5)  # 收到5个字节
+    data = client_socket.recv(9)  # 收到9个字节
     data = data.decode('gbk')
-    data = str(data)
-    f_data = data.replace("\\", "").replace("r", "").replace("n", "")   # 去掉回车换行
+    data = str(data[0:5])   # 去掉回车换行和空格
+    f_data = data.replace("\\", "").replace("r", "").replace("n", "").lstrip('0')  # 去掉特殊符号
     f_data = float(f_data)
     data_buff.append(f_data)
     data_buff_normalize = []    # 归一化幅度
@@ -50,16 +45,15 @@ def Receive():
         draw(data_buff_normalize)
         data_buff.clear()  # 清空
 
-
 # 画曲线
+
+
 def draw(data):
-    freq = np.linspace(0, 200, 5)  # 频率轴
+    freq = np.linspace(0, 200, 10)  # 频率轴
     plt.xlabel("Frequency/KHz")
     plt.ylabel("Normalization/dB")
     plt.plot(freq, data, color='red')
     plt.show()
-    datacursor(hover=True, xytext=(0, 20),
-               formatter='{label}: {height}'.format)    # 与鼠标交互
 
 
 if __name__ == '__main__':
