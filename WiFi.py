@@ -8,6 +8,8 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 
+plt.rcParams["font.sans-serif"] = ["SimHei"]  # 设置字体
+plt.rcParams["axes.unicode_minus"] = False  # 该语句解决图像中的“-”负号的乱码问题
 # socket
 # 地址和端口号
 address = ('192.168.0.171', 8080)
@@ -26,37 +28,41 @@ if clientAddr is not None:
 
 # 接收数据
 data_buff = []
-amp_num = 10     # 纵坐标数据量
+amp_num = 10  # 纵坐标数据量
 
 
 def Receive():
     data = client_socket.recv(9)  # 收到9个字节
     data = data.decode('gbk')
-    data = str(data[0:5])   # 去掉回车换行和空格
+    data = str(data[0:5])  # 去掉回车换行和空格
     f_data = data.replace("\\", "").replace("r", "").replace("n", "").lstrip('0')  # 去掉特殊符号
     f_data = float(f_data)
     data_buff.append(f_data)
-    data_buff_normalize = []    # 归一化幅度
+    data_buff_normalize = []  # 归一化幅度
     # 接收到的信息，一个字节
     if len(data_buff) >= amp_num:  # 收到足够的数据后绘图
         max_value = max(data_buff)  # 求列表最大值
-        for i in range(0, amp_num):
-            data_buff_normalize.append(20*np.log(data_buff[i]/max_value))
+        data_buff.sort(reverse=True)  # 降序排序，防止丢包后数据异常
+        for i in range(amp_num):
+            data_buff_normalize.append(20 * np.log10(data_buff[i] / max_value))
         draw(data_buff_normalize)
         data_buff.clear()  # 清空
+        data_buff_normalize.clear()
+
 
 # 画曲线
 
 
 def draw(data):
     freq = np.linspace(0, 200, 10)  # 频率轴
-    plt.xlabel("Frequency/KHz")
-    plt.ylabel("Normalization/dB")
+    plt.title("远程幅频特性曲线")
+    plt.xlabel("频率/KHz")
+    plt.ylabel("归一化幅度/dB")
     plt.plot(freq, data, color='red')
+    plt.figure(figsize=(10, 10.5))
     plt.show()
 
 
 if __name__ == '__main__':
     while True:
-        Receive()
-        time.sleep(0.2)
+        Receive()  # 一直接收数据
