@@ -10,14 +10,13 @@ import numpy as np
 
 plt.rcParams["font.sans-serif"] = ["SimHei"]  # 设置字体
 plt.rcParams["axes.unicode_minus"] = False  # 该语句解决图像中的“-”负号的乱码问题
-# socket
+
 # 地址和端口号
 address = ('192.168.0.171', 8080)
 # 创建一个socket
 tcp_server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # 绑定
 tcp_server_socket.bind(address)
-
 # listen里的数字表征同一时刻能连接客户端的程度.
 tcp_server_socket.listen(5)
 
