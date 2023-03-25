@@ -44,7 +44,7 @@ def Receive():
         max_value = max(data_buff)  # 求列表最大值
         data_buff.sort(reverse=True)  # 降序排序，防止丢包后数据异常
         for i in range(amp_num):
-            data_buff_normalize.append(20 * np.log10(data_buff[i] / max_value))
+            data_buff_normalize.append(20 * np.log10(data_buff[i] / max_value))  # 归一化
         draw(data_buff_normalize)
         data_buff.clear()  # 清空
         data_buff_normalize.clear()
@@ -54,7 +54,7 @@ def Receive():
 
 
 def draw(data):
-    freq = np.linspace(0, 200, 10)  # 频率轴
+    freq = np.linspace(0, 200, amp_num)  # 频率轴 0-200KHz,amp_num个点
     plt.title("远程幅频特性曲线")
     plt.xlabel("频率/KHz")
     plt.ylabel("归一化幅度/dB")
