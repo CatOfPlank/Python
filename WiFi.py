@@ -50,7 +50,7 @@ def Receive():
 
 
 # 画曲线
-fig = plt.figure()
+fig = plt.figure(figsize=(10, 8))
 def draw(data):
     plt.ion
     freq = np.linspace(0, 200, amp_num)  # 频率轴 0-200KHz,amp_num个点
@@ -60,9 +60,7 @@ def draw(data):
     plt.plot(freq, data, color='red')
     plt.draw()
     plt.pause(2)
-    plt.clf()   # 清空图像
-
-
+    plt.clf()  # 清空图像
 
 
 if __name__ == '__main__':
