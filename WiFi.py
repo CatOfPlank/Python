@@ -50,16 +50,19 @@ def Receive():
 
 
 # 画曲线
-
-
+fig = plt.figure()
 def draw(data):
+    plt.ion
     freq = np.linspace(0, 200, amp_num)  # 频率轴 0-200KHz,amp_num个点
     plt.title("远程幅频特性曲线")
     plt.xlabel("频率/KHz")
     plt.ylabel("归一化幅度/dB")
     plt.plot(freq, data, color='red')
-    plt.figure(figsize=(10, 10.5))
-    plt.show()
+    plt.draw()
+    plt.pause(2)
+    plt.clf()   # 清空图像
+
+
 
 
 if __name__ == '__main__':
