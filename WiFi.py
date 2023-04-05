@@ -51,8 +51,10 @@ def Receive():
 
 # 画曲线
 fig = plt.figure(figsize=(10, 8))
+
+
 def draw(data):
-    plt.ion
+    plt.ion  # 互动
     freq = np.linspace(0, 200, amp_num)  # 频率轴 0-200KHz,amp_num个点
     plt.title("远程幅频特性曲线")
     plt.xlabel("频率/KHz")
