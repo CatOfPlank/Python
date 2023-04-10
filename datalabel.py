@@ -1,4 +1,9 @@
-# 分词
+# coding=gb2312
+# coding = utf-8
+# jieba分词程序
+# 2023.4.10
+
+
 import jieba
 import pandas as pd
 
@@ -12,8 +17,8 @@ def cut_words(text):
     words = jieba.cut(text)
     return ''.join(words)
 
-#   对每一列分词
+    #   对每一列分词
     job_data['职位描述关键词'] = job_data['职位描述'].apply(cut_words)
 
-#   保存到新的csv文件
-    job_data.to_csv('job_key_work',index=False)
+    #   保存到新的csv文件
+    job_data.to_csv('job_key_work', index=False)
