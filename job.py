@@ -92,9 +92,9 @@ for i in job_id[:1574]:
           educationalRequirements, labelName, skills, jobRequirements, detailedAddress, exp)
     csv_writer.writerow(dit)
 
+# 岗位匹配度模型
 # 导入数据集
-df = pd.read_csv('result_0.csv')
-
+df = pd.read_csv('result1-1.csv')
 # 创建tf-idf向量化器
 vectorizer = TfidfVectorizer(stop_words='english')
 
@@ -120,6 +120,4 @@ def recommend(job_title):
     recommended_jobs = df.iloc[top_similarities]['Job Title'].tolist()
     print(f"您的职位匹配'{job_title}'的推荐职位为：\n{recommended_jobs}")
 
-
-# 测试推荐函数
-recommend('Data Analyst')
+# 求职者满意度模型

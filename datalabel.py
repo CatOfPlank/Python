@@ -12,13 +12,14 @@ job_data = pd.read_csv('result1-1.csv')
 hunters_data = pd.read_csv('result1-2.csv')
 
 
-#   定义分词函数
-def cut_words(text):
-    words = jieba.cut(text)
-    return ''.join(words)
+#   定义分词函数,对csv文件分词
+def cut_words(file, output_file):
+    with open(output_file, "w", encoding="utf-8") as f:
+        for line in open(file, "r", encoding="utf-8"):
+            line = line.strip()
+            o_str = " ".join(jieba.lcut(line))
+            f.write(o_str + "\n")
 
-    #   对每一列分词
-    job_data['职位描述关键词'] = job_data['职位描述'].apply(cut_words)
 
-    #   保存到新的csv文件
-    job_data.to_csv('job_key_work', index=False)
+if __name__ == '__main__':
+    cut_words('result1-1.csv', 'job_key_works')
