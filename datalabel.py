@@ -26,7 +26,7 @@ def cut_words(file, output_file):
         reader = csv.reader(data_f)
         for row in reader:
             jieba.load_userdict('dic.txt')  # 自定义词库
-        key_words = jieba.cut(row[21])  # 求职者为21，职位10
+            key_words = jieba.cut(row[21])  # 求职者为21，职位10
             # for column in columns:
             #     key_words = jieba.cut(column, cut_all=False)  # 对每一列分词
             for key_word in key_words:
