@@ -12,7 +12,7 @@ plt.rcParams["font.sans-serif"] = ["SimHei"]  # 设置字体
 plt.rcParams["axes.unicode_minus"] = False  # 该语句解决图像中的“-”负号的乱码问题
 
 # 地址和端口号
-address = ('192.168.0.171', 8080)
+address = ('192.168.0.173', 8080)
 # 创建一个socket
 tcp_server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # 绑定

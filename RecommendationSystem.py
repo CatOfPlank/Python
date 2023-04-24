@@ -20,6 +20,8 @@ corpus = [
     'This is the second document.',
     'And this is the third one.',
     'Is this the first document?',
+    '中华人民共和国',
+    '中华人民共和国',
 ]
 
 # 使用CountVectorizer将文本转换为词袋向量
@@ -32,4 +34,4 @@ tfidf_vectorizer = TfidfVectorizer()
 X_tfidf = tfidf_vectorizer.fit_transform(corpus)
 tfidf_arr = X_tfidf.toarray()
 print(tfidf_arr)
-print("余弦相似度：", cosine_similarity(tfidf_arr[0], tfidf_arr[3]))
+print("余弦相似度：", cosine_similarity(tfidf_arr[4], tfidf_arr[5]))
